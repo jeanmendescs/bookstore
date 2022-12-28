@@ -1,31 +1,18 @@
 const express = require("express");
+
+const router = express.Router();
+
 const { ObjectId } = require("mongodb");
-const { connectToDb, getDb } = require("./db");
+const { getDb } = require("./models/connection/connection");
 
-// init app & middleware
-const app = express();
-app.use(express.json());
-
-// db connection
-let db;
-
-connectToDb((err) => {
-  if (!err) {
-    app.listen(5000, () => {
-      console.log("app listening on port 3000");
-    });
-    db = getDb();
-  }
-});
-
-// routes
-app.get("/books", (req, res) => {
+router.get("/books", (req, res) => {
   const page = req.query.p || 0;
   const booksPerPage = 3;
 
   let books = [];
 
-  db.collection("books")
+  getDb()
+    .collection("books")
     .find()
     .sort({ author: 1 })
     .skip(page * booksPerPage)
@@ -39,14 +26,15 @@ app.get("/books", (req, res) => {
     });
 });
 
-app.get("/books/:id", (req, res) => {
+router.get("/books/:id", (req, res) => {
   // current page
 
   if (!ObjectId.isValid(req.params.id)) {
     return res.status(500).json({ error: "Not a valid doc id" });
   }
 
-  db.collection("books")
+  getDb()
+    .collection("books")
     .findOne({ _id: ObjectId(req.params.id) })
     .then((doc) => {
       res.status(200).json(doc);
@@ -56,10 +44,11 @@ app.get("/books/:id", (req, res) => {
     });
 });
 
-app.post("/books", (req, res) => {
+router.post("/books", (req, res) => {
   const book = req.body;
 
-  db.collection("books")
+  getDb()
+    .collection("books")
     .insertOne(book)
     .then((result) => {
       res.status(201).json(result);
@@ -69,12 +58,13 @@ app.post("/books", (req, res) => {
     });
 });
 
-app.delete("/books/:id", (req, res) => {
+router.delete("/books/:id", (req, res) => {
   if (!ObjectId.isValid(req.params.id)) {
     return res.status(500).json({ error: "Not a valid doc id" });
   }
 
-  db.collection("books")
+  getDb()
+    .collection("books")
     .deleteOne({ _id: ObjectId(req.params.id) })
     .then((result) => {
       res.status(200).json(result);
@@ -84,14 +74,15 @@ app.delete("/books/:id", (req, res) => {
     });
 });
 
-app.patch("/books/:id", (req, res) => {
+router.patch("/books/:id", (req, res) => {
   const updates = req.body;
 
   if (!ObjectId.isValid(req.params.id)) {
     return res.status(500).json({ error: "Not a valid doc id" });
   }
 
-  db.collection("books")
+  getDb()
+    .collection("books")
     .updateOne({ _id: ObjectId(req.params.id) }, { $set: updates })
     .then((result) => {
       res.status(200).json(result);
@@ -100,3 +91,5 @@ app.patch("/books/:id", (req, res) => {
       res.status(500).json({ error: "Could not update the document" });
     });
 });
+
+module.exports = router;
