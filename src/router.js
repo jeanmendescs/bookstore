@@ -1,12 +1,11 @@
 const express = require("express");
-const { ObjectId } = require("mongodb");
 
-const { getDb } = require("./models/connection");
 const {
   getAll,
   getBook,
   createBook,
   deleteBook,
+  updateBook,
 } = require("./controllers/booksController");
 
 const router = express.Router();
@@ -19,22 +18,6 @@ router.post("/books", createBook);
 
 router.delete("/books/:id", deleteBook);
 
-router.patch("/books/:id", (req, res) => {
-  const updates = req.body;
-
-  if (!ObjectId.isValid(req.params.id)) {
-    return res.status(500).json({ error: "Not a valid doc id" });
-  }
-
-  getDb()
-    .collection("books")
-    .updateOne({ _id: ObjectId(req.params.id) }, { $set: updates })
-    .then((result) => {
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: "Could not update the document" });
-    });
-});
+router.patch("/books/:id", updateBook);
 
 module.exports = router;

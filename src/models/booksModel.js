@@ -47,9 +47,20 @@ const deleteBook = async (req) => {
     .deleteOne({ _id: ObjectId(id) });
 };
 
+const updateBook = async (req) => {
+  const updates = req.body;
+  const id = req.params.id;
+  validateId(id);
+
+  return getDb()
+    .collection("books")
+    .updateOne({ _id: ObjectId(req.params.id) }, { $set: updates });
+};
+
 module.exports = {
   getAll,
   getBook,
   createBook,
   deleteBook,
+  updateBook,
 };

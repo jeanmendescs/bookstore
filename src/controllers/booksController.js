@@ -24,9 +24,16 @@ const deleteBook = async (req, res) => {
   return res.json(body);
 };
 
+const updateBook = async (req, res) => {
+  const updatedBook = await booksModel.updateBook(req);
+
+  return res.json(updatedBook);
+};
+
 module.exports = {
   getAll,
   getBook,
   createBook,
   deleteBook,
+  updateBook,
 };
