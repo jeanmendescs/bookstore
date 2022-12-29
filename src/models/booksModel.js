@@ -1,4 +1,4 @@
-const { ObjectId } = require("mongodb");
+const validateId = require("../middlewares/validate-id");
 
 const { getDb } = require("./connection");
 
@@ -22,18 +22,23 @@ const getAll = async (req) => {
 };
 
 const getBook = async (req) => {
-  if (!ObjectId.isValid(req.params.id)) {
-    return { error: "Not a valid doc id" };
-  }
+  const id = req.params.id;
+  validateId(id);
 
-  const book = await getDb()
-    .collection("books")
-    .findOne({ _id: ObjectId(req.params.id) });
+  const book = await getDb().collection("books").findOne({ _id: id });
 
   return book;
+};
+
+const createBook = async (req, res) => {
+  const book = req.body;
+  const result = await getDb().collection("books").insertOne(book);
+
+  return result;
 };
 
 module.exports = {
   getAll,
   getBook,
+  createBook,
 };

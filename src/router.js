@@ -2,7 +2,11 @@ const express = require("express");
 const { ObjectId } = require("mongodb");
 
 const { getDb } = require("./models/connection");
-const { getAll, getBook } = require("./controllers/booksController");
+const {
+  getAll,
+  getBook,
+  createBook,
+} = require("./controllers/booksController");
 
 const router = express.Router();
 
@@ -10,19 +14,7 @@ router.get("/books", getAll);
 
 router.get("/books/:id", getBook);
 
-router.post("/books", (req, res) => {
-  const book = req.body;
-
-  getDb()
-    .collection("books")
-    .insertOne(book)
-    .then((result) => {
-      res.status(201).json(result);
-    })
-    .catch((err) => {
-      res.status(500).json({ err: "Could not create a new document" });
-    });
-});
+router.post("/books", createBook);
 
 router.delete("/books/:id", (req, res) => {
   if (!ObjectId.isValid(req.params.id)) {

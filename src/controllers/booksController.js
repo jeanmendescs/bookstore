@@ -12,7 +12,14 @@ const getBook = async (req, res) => {
   return res.json(book);
 };
 
+const createBook = async (req, res) => {
+  const result = await booksModel.createBook(req, res);
+
+  return res.json(result);
+};
+
 module.exports = {
   getAll,
   getBook,
+  createBook,
 };
