@@ -1,30 +1,12 @@
 const express = require("express");
+const { ObjectId } = require("mongodb");
+
+const { getDb } = require("./models/connection");
+const { getAll } = require("./controllers/booksController");
 
 const router = express.Router();
 
-const { ObjectId } = require("mongodb");
-const { getDb } = require("./models/connection/connection");
-
-router.get("/books", (req, res) => {
-  const page = req.query.p || 0;
-  const booksPerPage = 3;
-
-  let books = [];
-
-  getDb()
-    .collection("books")
-    .find()
-    .sort({ author: 1 })
-    .skip(page * booksPerPage)
-    .limit(booksPerPage)
-    .forEach((book) => books.push(book))
-    .then(() => {
-      res.status(200).json(books);
-    })
-    .catch(() => {
-      res.status(500).json({ error: "Could not fetch the documents" });
-    });
-});
+router.get("/books", getAll);
 
 router.get("/books/:id", (req, res) => {
   // current page
