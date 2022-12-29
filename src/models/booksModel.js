@@ -1,5 +1,6 @@
-const validateId = require("../middlewares/validate-id");
+const { ObjectId } = require("mongodb");
 
+const { validateId } = require("../middlewares/validate-id");
 const { getDb } = require("./connection");
 
 const getAll = async (req) => {
@@ -25,20 +26,30 @@ const getBook = async (req) => {
   const id = req.params.id;
   validateId(id);
 
-  const book = await getDb().collection("books").findOne({ _id: id });
+  const book = await getDb()
+    .collection("books")
+    .findOne({ _id: ObjectId(id) });
 
   return book;
 };
 
-const createBook = async (req, res) => {
+const createBook = async (req) => {
   const book = req.body;
-  const result = await getDb().collection("books").insertOne(book);
+  return await getDb().collection("books").insertOne(book);
+};
 
-  return result;
+const deleteBook = async (req) => {
+  const id = req.params.id;
+  validateId(id);
+
+  return await getDb()
+    .collection("books")
+    .deleteOne({ _id: ObjectId(id) });
 };
 
 module.exports = {
   getAll,
   getBook,
   createBook,
+  deleteBook,
 };

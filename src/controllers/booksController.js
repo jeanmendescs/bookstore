@@ -13,13 +13,20 @@ const getBook = async (req, res) => {
 };
 
 const createBook = async (req, res) => {
-  const result = await booksModel.createBook(req, res);
+  const body = await booksModel.createBook(req);
 
-  return res.json(result);
+  return res.json(body);
+};
+
+const deleteBook = async (req, res) => {
+  const body = await booksModel.deleteBook(req);
+
+  return res.json(body);
 };
 
 module.exports = {
   getAll,
   getBook,
   createBook,
+  deleteBook,
 };
