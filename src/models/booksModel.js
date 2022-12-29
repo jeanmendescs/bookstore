@@ -1,3 +1,5 @@
+const { ObjectId } = require("mongodb");
+
 const { getDb } = require("./connection");
 
 const getAll = async (req) => {
@@ -19,6 +21,19 @@ const getAll = async (req) => {
   return books;
 };
 
+const getBook = async (req) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return { error: "Not a valid doc id" };
+  }
+
+  const book = await getDb()
+    .collection("books")
+    .findOne({ _id: ObjectId(req.params.id) });
+
+  return book;
+};
+
 module.exports = {
   getAll,
+  getBook,
 };

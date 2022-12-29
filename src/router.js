@@ -2,29 +2,13 @@ const express = require("express");
 const { ObjectId } = require("mongodb");
 
 const { getDb } = require("./models/connection");
-const { getAll } = require("./controllers/booksController");
+const { getAll, getBook } = require("./controllers/booksController");
 
 const router = express.Router();
 
 router.get("/books", getAll);
 
-router.get("/books/:id", (req, res) => {
-  // current page
-
-  if (!ObjectId.isValid(req.params.id)) {
-    return res.status(500).json({ error: "Not a valid doc id" });
-  }
-
-  getDb()
-    .collection("books")
-    .findOne({ _id: ObjectId(req.params.id) })
-    .then((doc) => {
-      res.status(200).json(doc);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: "Could not fetch the document" });
-    });
-});
+router.get("/books/:id", getBook);
 
 router.post("/books", (req, res) => {
   const book = req.body;
