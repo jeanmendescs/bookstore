@@ -1,5 +1,8 @@
 const express = require("express");
 
+const { validate } = require("./middlewares/validate");
+const { updateBookSchema } = require("./middlewares/booksSchema");
+
 const {
   getAll,
   getBook,
@@ -18,6 +21,6 @@ router.post("/books", createBook);
 
 router.delete("/books/:id", deleteBook);
 
-router.patch("/books/:id", updateBook);
+router.patch("/books/:id", validate(updateBookSchema), updateBook);
 
 module.exports = router;
