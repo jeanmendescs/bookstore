@@ -1,6 +1,5 @@
 const { ObjectId } = require("mongodb");
 
-const { validateId } = require("../middlewares/validate-id");
 const { getDb } = require("./connection");
 
 const getAll = async (req) => {
@@ -24,7 +23,6 @@ const getAll = async (req) => {
 
 const getBook = async (req) => {
   const id = req.params.id;
-  validateId(id);
 
   const book = await getDb()
     .collection("books")
@@ -40,7 +38,6 @@ const createBook = async (req) => {
 
 const deleteBook = async (req) => {
   const id = req.params.id;
-  validateId(id);
 
   return await getDb()
     .collection("books")
@@ -50,7 +47,6 @@ const deleteBook = async (req) => {
 const updateBook = async (req) => {
   const updates = req.body;
   const id = req.params.id;
-  validateId(id);
 
   return getDb()
     .collection("books")
