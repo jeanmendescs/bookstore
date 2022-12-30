@@ -31,7 +31,7 @@ To run the application:
 git clone https://github.com/jeanmendescs/bookstore.git
 
 # Open the project's folder on your terminal
-$ cd promotions
+$ cd bookstore
 
 # Install project's dependencies
 $ npm install
@@ -40,7 +40,10 @@ $ npm install
 
 # Create a .env file as the .env.example
 
-# Start the application
+# To start the server with a seeded database
+$ npm run seeds
+
+# To start the server without a seeded database
 $ npm start
 
 ```
