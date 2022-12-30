@@ -18,6 +18,12 @@ const getAllSchema = yup.object({
   }),
 });
 
+const getBookSchema = yup.object({
+  params: yup.object({
+    id: yup.string().mongoDBId("Invalid Id").required(),
+  }),
+});
+
 const updateBookSchema = yup.object({
   body: yup
     .object({
@@ -46,5 +52,6 @@ const updateBookSchema = yup.object({
 
 module.exports = {
   getAllSchema,
+  getBookSchema,
   updateBookSchema,
 };
