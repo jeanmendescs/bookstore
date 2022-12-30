@@ -12,6 +12,12 @@ yup.addMethod(yup.string, "mongoDBId", function (errorMessage) {
   });
 });
 
+const getAllSchema = yup.object({
+  query: yup.object({
+    p: yup.number().min(0).optional(),
+  }),
+});
+
 const updateBookSchema = yup.object({
   body: yup
     .object({
@@ -39,5 +45,6 @@ const updateBookSchema = yup.object({
 });
 
 module.exports = {
+  getAllSchema,
   updateBookSchema,
 };

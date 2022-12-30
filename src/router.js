@@ -1,7 +1,7 @@
 const express = require("express");
 
 const { validate } = require("./middlewares/validate");
-const { updateBookSchema } = require("./middlewares/booksSchema");
+const { updateBookSchema, getAllSchema } = require("./middlewares/booksSchema");
 
 const {
   getAll,
@@ -13,7 +13,7 @@ const {
 
 const router = express.Router();
 
-router.get("/books", getAll);
+router.get("/books", validate(getAllSchema), getAll);
 
 router.get("/books/:id", getBook);
 
