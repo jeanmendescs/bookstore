@@ -2,9 +2,10 @@ const express = require("express");
 
 const { validate } = require("./middlewares/validate");
 const {
-  updateBookSchema,
+  bookIdSchema,
+  createBookSchema,
   getAllSchema,
-  getBookSchema,
+  updateBookSchema,
 } = require("./middlewares/booksSchema");
 
 const {
@@ -19,11 +20,11 @@ const router = express.Router();
 
 router.get("/books", validate(getAllSchema), getAll);
 
-router.get("/books/:id", validate(getBookSchema), getBook);
+router.get("/books/:id", validate(bookIdSchema), getBook);
 
-router.post("/books", createBook);
+router.post("/books", validate(createBookSchema), createBook);
 
-router.delete("/books/:id", deleteBook);
+router.delete("/books/:id", validate(bookIdSchema), deleteBook);
 
 router.patch("/books/:id", validate(updateBookSchema), updateBook);
 
