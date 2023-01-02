@@ -61,7 +61,7 @@ Finished.
  <sub style="display:block; text-align:center;"><span >Jean Carlos</span></sub></a> <a href="https://github.com/jeanmendescs" title="Jean's Profile Picture"></a>
 </div>
 
-Feel free to be get in touch.
+Feel free to get in touch.
 
 <div style="display: inline-block;">
 <a href="https://www.linkedin.com/in/jean-mendes//"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Profile" ></a>
